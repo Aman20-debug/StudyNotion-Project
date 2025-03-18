@@ -23,7 +23,7 @@ const dotenv = require("dotenv");
 
 //load config from env file
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 //connect to the database
 const dbconnect = require("./config/database");
@@ -33,12 +33,19 @@ dbconnect();
 //Middleware 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-    cors({
-        origin: "https://localhost:3000",
-        credentials: true,
-    })
-)
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
+
 
 //middleware for uploading file into our server
 const fileupload = require("express-fileupload");
