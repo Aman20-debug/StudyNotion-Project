@@ -42,14 +42,14 @@ exports.createCategory = async (req, res) => {
 
 //get All category handler function
 exports.showAllCategory = async (req,res) => {
-    try{
-        const allCategory = await Category.find({}, {name: true, description: true});
-        res.status(200).json({
-            success: true,
-            message: "All Category returned Successfully.",
-            allTags,
-        });
-    }
+    try {
+        console.log("INSIDE SHOW ALL CATEGORIES");
+		const allCategorys = await Category.find({});
+		res.status(200).json({
+			success: true,
+			data: allCategorys,
+		});
+	}
     catch(err){
         return res.status(500).json({
             success: false,
