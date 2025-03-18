@@ -15,10 +15,11 @@ const mailSender = async (email, title, body) => {
         })
 
         let info = await transporter.sendMail({
-            from: "StudyNotion - by Aman",
-            to: `${email}`,
-            subject: `${title}`,
-            html: `${body}`,
+            from: `"StudyNotion - by Aman" <${process.env.MAIL_USER}>`,
+            to: email,
+            subject: title,
+            text: "Your email client does not support HTML. Please enable HTML view.",
+            html: body,  // ✅ Pass `body` directly instead of using string interpolation
         })
         console.log(info);
         return info;
