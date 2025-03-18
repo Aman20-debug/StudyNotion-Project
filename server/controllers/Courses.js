@@ -1,7 +1,7 @@
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
-const uploadImageToCloudinary = require("../utils/imageUploader");
+const {uploadImageToCloudinary} = require("../utils/imageUploader");
 const CourseProgress = require("../models/CourseProgress");
 const SubSection = require("../models/SubSection")
 const Section = require("../models/Section")
@@ -13,18 +13,38 @@ exports.createCourse = async (req, res) => {
     try{
 
         //fetch data
-        const {courseName, courseDescription, whatYouWillLearn, price, category} = req.body;
+        let {courseName, courseDescription, whatYouWillLearn, price, category, tags: _tags, instructions: _instructions,  status} = req.body;
         
         //get thumbnail
         const thumbnail = req.files.thumbnailImage;
 
+        // Convert the tag and instructions from stringified Array to Array
+        // const tag = JSON.parse(_tag)
+        // const instructions = JSON.parse(_instructions)
+
+        console.log("tags", _tags);
+        console.log("instructions", _instructions);
+
+        // Convert the tags and instructions from stringified JSON to Array
+        const tags = JSON.parse(_tags);  
+        const instructions = JSON.parse(_instructions);
+
+        console.log("tags", tags);
+        console.log("instructions", instructions);
+
+
+
         //validation
-        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !category || !thumbnail)
+        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !category || !thumbnail || !_tags.length)
         {
             return res.status(400).json({
                 success: false,
                 message: 'All fields are required',
             });
+        }
+
+        if (!status || status === undefined) {
+            status = "Draft"
         }
 
         //check for instructor
@@ -62,6 +82,9 @@ exports.createCourse = async (req, res) => {
             price,
             category: categoryDetails._id,
             thumbnail: thumbnailImage.secure_url,
+            tags,
+            instructions,
+            status: status,
         });
 
         //add the new Course to the user schema of Instructor
@@ -172,7 +195,7 @@ exports.getCourseDetails = async (req, res) => {
         }
 
         return res.status(200).json({
-            success: false,
+            success: true,
             message: "Course Details fetched Successfully.",
             data: courseDetails,
         })
