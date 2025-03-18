@@ -29,7 +29,7 @@ exports.createSection = async(req, res) => {
         .populate({
             path: 'courseContent', // Populate courseContent (sections)
             populate: {
-                path: 'subSections', // Populate subSections within each section
+                path: 'subSection', // Populate subSections within each section
                 model: 'SubSection', // Ensure the correct model is used
             }
         });
