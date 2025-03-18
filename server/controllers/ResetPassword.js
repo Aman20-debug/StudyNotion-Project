@@ -1,5 +1,5 @@
 // controllers/ResetPassword.js
-const { User } = require("../models/User"); // Fix the import statement
+const User = require("../models/User"); // Remove { User } // Fix the import statement
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto"); // Make sure to import crypto for randomUUID
