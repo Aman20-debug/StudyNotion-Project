@@ -6,8 +6,8 @@ import CTAButton from "../components/core/Homepage/Button"
 import Banner from "../assets/images/banner.mp4"
 import CodeBlocks from '../components/core/Homepage/CodeBlocks';
 import ExploreMore from "../components/core/Homepage/ExploreMore"
-// import TimelineSection from '../components/core/Homepage/TimelineSection';
-// import LearningLanguageSection from '../components/core/Homepage/LearningLanguageSection';
+import TimelineSection from '../components/core/Homepage/TimelineSection';
+import LearningLanguageSection from '../components/core/Homepage/LearningLanguageSection';
 import InstructorSection from "../components/core/Homepage/InstructorSection"
 import ReviewSlider from "../components/common/ReviewSlider"
 
@@ -128,7 +128,7 @@ export const Home = () => {
 
         </div> 
 
-         {/* Section 2 */}
+        {/* Section 2 */}
         <div className="bg-pure-greys-5 text-richblack-700">
             <div className="homepage_bg h-[320px]">
             {/* Explore Full Catagory Section */}
