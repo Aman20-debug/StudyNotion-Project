@@ -10,7 +10,7 @@ import TimelineSection from '../components/core/Homepage/TimelineSection';
 import LearningLanguageSection from '../components/core/Homepage/LearningLanguageSection';
 import InstructorSection from "../components/core/Homepage/InstructorSection"
 import ReviewSlider from "../components/common/ReviewSlider"
-
+import Footer from "../components/common/Footer"
 
 export const Home = () => {
   return (
@@ -194,6 +194,7 @@ export const Home = () => {
         </div>
 
         {/* Footer */}
+        <Footer/>
 
     </div>
   );
