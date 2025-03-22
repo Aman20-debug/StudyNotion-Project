@@ -11,6 +11,7 @@ import LearningLanguageSection from '../components/core/Homepage/LearningLanguag
 import InstructorSection from "../components/core/Homepage/InstructorSection"
 import ReviewSlider from "../components/common/ReviewSlider"
 
+
 export const Home = () => {
   return (
     <div>
