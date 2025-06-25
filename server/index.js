@@ -33,7 +33,7 @@ dbconnect();
 //Middleware 
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"];
 
 app.use(cors({
   origin: function(origin, callback) {
@@ -60,6 +60,7 @@ app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
+app.use("/api/v1/reach", contactUsRoute);
 
 //start server
 app.listen(PORT, () => {
@@ -69,5 +70,5 @@ app.listen(PORT, () => {
 
 //default route
 app.get("/", (req, res) => {
-    res.send(`<h1> This is HOMEPAGE Aman</h1>`);
+    res.send(<h1> This is HOMEPAGE Aman</h1>);
 })
