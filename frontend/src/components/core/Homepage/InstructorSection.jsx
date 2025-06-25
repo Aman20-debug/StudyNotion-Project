@@ -1,7 +1,7 @@
 import React from 'react'
 import CTAButton from "../../../components/core/Homepage/Button";
 import { FaArrowRight } from "react-icons/fa";
-import Instructor from "../../../assets/Images/Instructor.png";
+import Instructor from "../../../assets/images/Instructor.png";
 import HighlightText from './HighlightText';
 export default function InstructorSection() {
   return (

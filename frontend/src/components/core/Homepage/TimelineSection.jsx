@@ -1,5 +1,5 @@
 import React from 'react'
-import TimeLineImage from "../../../assets/Images/TimelineImage.png";
+import TimeLineImage from "../../../assets/images/TimelineImage.png";
 import Logo1 from "../../../assets/TimeLineLogo/Logo1.svg";
 import Logo2 from "../../../assets/TimeLineLogo/Logo2.svg";
 import Logo3 from "../../../assets/TimeLineLogo/Logo3.svg";
