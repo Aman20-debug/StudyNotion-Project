@@ -82,6 +82,7 @@ exports.updateSection = async(req, res) => {
         return res.status(200).json({
             success: true,
             message: "Section Updated Successfully.",
+            data: updatesection,
         });
     }
     catch(err){
@@ -94,26 +95,49 @@ exports.updateSection = async(req, res) => {
 }
 
 
-//delete Section
-exports.deleteSection = async(req, res) => {
-    try{
-        //get sectionId -> assuming that we are sending ID in params
-        const {sectionId} = req.params;
-        //use findByIdAndDelete
+
+exports.deleteSection = async (req, res) => {
+    try {
+        const { sectionId, courseId } = req.body;
+
+        if (!sectionId || !courseId) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields: sectionId or courseId",
+            });
+        }
+
+        // 1. Delete the section
         await Section.findByIdAndDelete(sectionId);
-        //TODO[Testing]: do we need to delete the entry from the course Schema? 
-        
-        //return response
+
+        // 2. Remove reference from the Course model
+        const updatedCourse = await Course.findByIdAndUpdate(
+            courseId,
+            {
+                $pull: {
+                    courseContent: sectionId,
+                },
+            },
+            { new: true }
+        ).populate({
+            path: "courseContent",
+            populate: {
+                path: "subSection",
+                model: "SubSection",
+            },
+        });
+
+        // 3. Send updated course data back
         return res.status(200).json({
             success: true,
             message: "Section Deleted Successfully.",
+            data: updatedCourse,
         });
-    }
-    catch(err){
-        console.log(err);
+    } catch (err) {
+        console.log("Error in deleteSection controller:", err);
         return res.status(500).json({
             success: false,
             message: "Error while Deleting Section.",
         });
     }
-}
+};

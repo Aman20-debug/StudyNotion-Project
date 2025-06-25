@@ -4,8 +4,10 @@ const Course = require("../models/Course");
 //create Rating
 exports.createRating = async (req, res) => {
     try{
-
+        console.log("Backend Rating HIT");
         //get user id
+        console.log("Request Body:", req.body)
+        console.log("User ID:", req.user.id)
         const userID = req.user.id;
         //fetch data from req ki body
         const {rating, review, courseID} = req.body;
