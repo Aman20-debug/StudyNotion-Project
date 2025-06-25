@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api/v1"
+const BASE_URL = import.meta.env.BACKEND_URL || "http://localhost:4000/api/v1";
 
 // AUTH ENDPOINTS
 export const endpoints = {
@@ -55,4 +55,24 @@ export const categories = {
 // CONTACT-US API
 export const contactusEndpoint = {
   CONTACT_US_API: BASE_URL + "/reach/contact",
+}
+
+
+// RATINGS AND REVIEWS
+export const ratingsEndpoints = {
+  REVIEWS_DETAILS_API: BASE_URL + "/course/getReviews",
+}
+
+// CATALOG PAGE DATA
+export const catalogData = {
+  CATALOGPAGEDATA_API: BASE_URL + "/course/getCategoryPageDetails",
+}
+
+// SETTINGS PAGE API
+// apis.js or wherever your API endpoints are defined
+export const settingsEndpoints = {
+  UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profile/updateImage",  // ✅ FIXED
+  UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
+  CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
+  DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 }
