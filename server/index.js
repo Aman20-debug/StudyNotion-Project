@@ -13,6 +13,11 @@ const {cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
+
+const FRONTEND_URL = require("./utils/url.js");
+
+
+
 // console.log("Cloudinary Credentials:", {
 //     CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
 //     API_KEY: process.env.CLOUDINARY_API_KEY,
@@ -33,7 +38,7 @@ dbconnect();
 //Middleware 
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"];
+const allowedOrigins = [FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"];
 
 app.use(cors({
   origin: function(origin, callback) {
