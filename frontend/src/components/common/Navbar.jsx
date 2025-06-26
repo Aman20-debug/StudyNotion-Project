@@ -28,7 +28,13 @@ export default function Navbar() {
     try{
       const res = await apiConnector("GET", categories.CATEGORIES_API)
       console.log("Printing result:", res);
-      setSubLinks(res.data.data.data)
+      const fetchedLinks = res.data?.data || [];
+      console.log("SubLinks Courses:", fetchedLinks.map(c => ({
+        name: c.name,
+        course: c.course,
+      })));
+
+      setSubLinks(fetchedLinks);
     }
     catch(error){
       console.log("Could not fetch Categories.", error)
@@ -89,7 +95,7 @@ export default function Navbar() {
                                       {
                                         subLinks
                                         ?.filter(
-                                          (subLink) => subLink?.courses?.length > 0
+                                          (subLink) => subLink?.course?.length > 0
                                         )
                                         ?.map((subLink, i) => 
                                         (
