@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api/v1";
+import VITE_BACKEND_URL from "../utils/url"
+const BASE_URL = VITE_BACKEND_URL || "http://localhost:4000/api/v1";
 
 // AUTH ENDPOINTS
 export const endpoints = {
