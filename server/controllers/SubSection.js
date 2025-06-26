@@ -4,11 +4,13 @@ const {uploadImageToCloudinary} = require("../utils/imageUploader");
 
 //Create a Sub Section
 exports.createSubSection = async(req, res) => {
+    console.log("CREATE SUBSECTION API HIT");
     try{
         //fetch data from Req body
         const {title, timeDuration, description, sectionId} = req.body;
         //extract file/video
-        const videoFile = req.files.videoFile;
+        console.log("req.files: ", req.files)
+        const videoFile = req.files.video;
         //validation
         if(!title || !timeDuration || !description || !sectionId || !videoFile)
         {
@@ -119,52 +121,47 @@ exports.updateSubSection = async (req, res) => {
 
 
 
+// Delete a Sub Section from a Section
+exports.deleteSubSection = async (req, res) => {
+  try {
+    const { subSectionId, sectionId } = req.body;
 
-//HW: Delete Sub Section
-exports.deleteSubSection = async(req, res) => {
-    try{
-        //get id
-        const {subSectionId, sectionId} = req.body;
-        //validation
-        if(!subSectionId || !sectionId)
-        {
-            return res.status(404).json({
-                success: false,
-                message: "SubSection or Section Not Found while Deleting Sub-Section.",
-                })
-        }
-
-        //first delete the subSection ref from the section Model 
-        await Section.findByIdAndUpdate(
-                                        {_id: sectionId},
-                                        {
-                                            $pull: {
-                                                subSection: subSectionId,
-                                            },
-                                        },
-                                        {new: true},
-        )
-
-        //Now delete the actual sub section
-        const subSection = await SubSection.findByIdAndDelete({ _id: subSectionId});
-
-        // find updated section and return it
-        const updatedSectionDetails = await Section.findById(sectionId).populate("subSection");
-        console.log("updated section", updatedSectionDetails);
-
-        //return response
-        return res.json({
-            success: true,
-            message: "Sub-Section Deleted successfully",
-            data: updatedSectionDetails,
-        });
-
+    // Validation
+    if (!subSectionId || !sectionId) {
+      return res.status(400).json({
+        success: false,
+        message: "SubSection ID or Section ID is missing.",
+      });
     }
-    catch(err){
-        console.log(err);
-        return res.status(500).json({
-            success: false,
-            message: "Error While Deleting Sub Section.",
-        });
-    }
-}
+
+    // Remove the subSection reference from the Section
+    await Section.findByIdAndUpdate(
+      sectionId,
+      {
+        $pull: {
+          subSection: subSectionId,
+        },
+      },
+      { new: true }
+    );
+
+    // Delete the actual SubSection document
+    await SubSection.findByIdAndDelete(subSectionId);
+
+    // Fetch updated section with populated subsections
+    const updatedSection = await Section.findById(sectionId).populate("subSection");
+
+    // Return the updated section
+    return res.status(200).json({
+      success: true,
+      message: "Sub-Section deleted successfully.",
+      data: updatedSection,
+    });
+  } catch (err) {
+    console.error("Error deleting subsection:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Error while deleting sub-section.",
+    });
+  }
+};

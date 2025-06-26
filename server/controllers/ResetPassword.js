@@ -3,6 +3,9 @@ const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
+const FRONTEND_URL = require("../utils/url");
+
+
 // RESET PASSWORD TOKEN CONTROLLER
 exports.resetPasswordToken = async (req, res) => {
   try {
@@ -31,7 +34,7 @@ exports.resetPasswordToken = async (req, res) => {
     );
 
     // Prepare frontend URL
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const frontendUrl = FRONTEND_URL || "http://localhost:5173";
     const url = `${frontendUrl}/update-password/${token}`;
 
     // Send mail
