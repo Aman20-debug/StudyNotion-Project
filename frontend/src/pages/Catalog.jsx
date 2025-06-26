@@ -25,6 +25,10 @@ const Catalog = () => {
           ct.name.split(" ").join("-").toLowerCase() ===
           catalogName?.toLowerCase()
       )
+      console.log("Fetched Categories: ", res?.data?.data);
+      console.log("URL catalogName: ", catalogName);
+      console.log("Matched category: ", matchedCategory);
+
       if (matchedCategory) setCategoryId(matchedCategory._id)
     }
     getCategories()
