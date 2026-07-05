@@ -16,8 +16,6 @@ exports.auth = async (req, res, next) => {
       token = req.body.token;
     }
 
-    console.log("Token in Auth: ", token);
-
     // If token is missing
     if (!token) {
       return res.status(401).json({

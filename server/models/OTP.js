@@ -1,6 +1,5 @@
 //Model 9
 const mongoose = require("mongoose");
-const mailSender = require("../utils/mailSender");
 
 const otpSchema = new mongoose.Schema({
     email: {
@@ -15,29 +14,14 @@ const otpSchema = new mongoose.Schema({
 
     createdAt: {
         type: Date,
-        default: Date.now(),
-        expires: 5*60,
+        default: Date.now,   // function reference, so each document gets its own timestamp
+        expires: 5*60,       // document auto-deletes 5 minutes after creation
     },
 
 });
 
-//a function -> to send emails
-async function sendVerificationEmail(email, otp) {
-    try{
-        const mailResponse = await mailSender(email, "Verification Email from StudyNotion", otp);
-        console.log("Email Sent Successfully: ", mailResponse);
-    }
-    catch(err)
-    {
-        console.log("Error Occured while Sending Mails: ", err);
-        throw err;
-    }
-}
-
-otpSchema.pre("save", async function(next){
-    await sendVerificationEmail(this.email, this.otp);
-    next();
-})
-
+// NOTE: the verification email is sent from the sendOTP controller using the
+// styled template. We intentionally do NOT send it from a pre-save hook here,
+// otherwise the user would receive two emails per OTP request.
 
 module.exports = mongoose.model("OTP", otpSchema);

@@ -11,10 +11,11 @@ cloudinary.config({
 });
 
 exports.uploadImageToCloudinary = async (file, folder, height, quality) => {
+    let tempPath;
     try {
         console.log("Uploading Image:", file.name);
 
-        const tempPath = path.join(__dirname, "../uploads", file.name);
+        tempPath = path.join(__dirname, "../uploads", file.name);
         await file.mv(tempPath);  // Move the file to uploads
         console.log("File moved to:", tempPath);
 
@@ -27,12 +28,14 @@ exports.uploadImageToCloudinary = async (file, folder, height, quality) => {
         const result = await cloudinary.uploader.upload(tempPath, options);
         console.log("Cloudinary Upload Success:", result);
 
-        // Remove temp file after upload
-        fs.unlinkSync(tempPath);
-
         return result;
     } catch (error) {
         console.error("Cloudinary Upload Error:", error);
         throw error;
+    } finally {
+        // Always remove the temp file, even if the upload failed
+        if (tempPath && fs.existsSync(tempPath)) {
+            fs.unlinkSync(tempPath);
+        }
     }
 };

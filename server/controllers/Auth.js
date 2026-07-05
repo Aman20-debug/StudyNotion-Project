@@ -35,10 +35,9 @@ exports.sendOTP = async (req, res) => {
             lowerCaseAlphabets: false,
             specialChars: false,
         });
-        console.log("OTP Generated: ",otp);
 
         //check unique otp or not
-        const result = await OTP.findOne({otp: otp});
+        let result = await OTP.findOne({otp: otp});
 
         while(result)
         {
@@ -53,8 +52,7 @@ exports.sendOTP = async (req, res) => {
         const otpPayload = {email, otp};
 
         //create an entry for db
-        const otpBody = await OTP.create(otpPayload);
-        console.log(otpBody);
+        await OTP.create(otpPayload);
 
         const emailTemplate = otpTemplate(otp);
 
@@ -62,11 +60,10 @@ exports.sendOTP = async (req, res) => {
         await mailSender (email, "Your StudyNotion OTP Code", emailTemplate);
 
 
-        //return response successful
+        //return response successful (OTP is intentionally NOT returned to the client)
         res.status(200).json({
             success: true,
             message: "Otp Sent Succesfully",
-            otp,
         });
 
     }
@@ -115,7 +112,6 @@ exports.signup = async (req, res) => {
 
         //find most recent OTP stored for the user to check whether the user enter the correct otp or not 
         const recentOtp = await OTP.findOne({email}).sort({createdAt: -1});
-        console.log("Recent OTP: ", recentOtp);  //recentOtp is the Otp send to the user via mail which was then stored in db
         //validate OTP
         if(!recentOtp)
         {
@@ -208,12 +204,12 @@ exports.login = async (req, res) => {
             }
 
             const token = jwt.sign(payload, process.env.JWT_SECRET, {
-                expiresIn: "2h",
+                expiresIn: "3d",
             });
             user.token = token;
             user.password = undefined;
 
-            //create cookie and send response
+            //create cookie and send response (cookie lifetime matches the JWT expiry)
             const options = {
                 expires: new Date(Date.now() + 3*24*60*60*1000),
                 httpOnly: true,
